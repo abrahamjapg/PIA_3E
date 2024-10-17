@@ -1,34 +1,46 @@
 # -MODIFICACIONES NECESARIAS
 # -MENU INTERACTIVO FUENTE
-def menu():  
-    print("Usted tiene la 
-  while True:
-      print("\nMenú:")
-      print("1. Consultas web")
-      print("2. Consultas de registros")
-      print("3. Estadísticas")
-      print("4. Gráficas")
-      print("5. Borrar todo")
-      print("6. Salir")
-      opcion = input("Seleccione una opción: ")
- 
-      if opcion == "1":
-          sub_menu_web(datos_pokemon)    
-      elif opcion == "2":
-          datos_cargados = cargar_datos(directorio_archivos)
-          consultar_registros(datos_cargados)
-          actualizar_archivos(directorio_archivos, datos_cargados, datos_pokemon)
-      elif opcion == "3":
-          stats = analisis_estadistico(datos_pokemon)
-          print(stats)
-      elif opcion == "4":
-          generar_graficas(datos_pokemon)
-      elif opcion == "5":
-          datos_pokemon.clear()
-          datos_cargados.clear()
-          print("¡Todos los registros han sido eliminados!")
-      elif opcion == "6":
-          print("Adios")
-          break
-      else:
-          print("Opción no válida. Por favor, seleccione una opción válida.")
+def menu_principal():
+    while True:
+        print("\nOpciones:")
+        print("1. apishodan")
+        print("2. abuseapi")
+        print("3. dificil")
+        print("4. facildiferente1")
+        print("5. facildiferente2")
+        print("6. Salir")
+
+        opcion = input("Selecciona una opción (1, 2 3, 4, 5, o 6): ")
+
+        if opcion == '1':
+            while True:
+                try:
+                    
+                except ValueError:
+                    
+        elif opcion == '2':
+            while True:
+                try:
+                    
+                    else:
+                        
+                            break
+        elif opcion == '3':
+            while True:
+                try:
+
+        elif opcion == '4':
+            while True:
+                try:
+
+        elif opcion == '5':
+            while True:
+                try:
+        
+        
+        elif opcion == '6':
+            print("Saliendo del programa...")
+            break
+
+        else:
+            print("Opción no válida. Por favor, selecciona 1, 2 o 3.")
