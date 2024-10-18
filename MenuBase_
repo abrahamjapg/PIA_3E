@@ -1,13 +1,14 @@
 # -MODIFICACIONES NECESARIAS
 # -MENU INTERACTIVO FUENTE
 import shodanAPI_module
+import Malware_analyzer_module as mam
 
 def menu_principal():
     while True:
         print("\nOpciones:")
         print("1. Obtener información con Shodan")
         print("2. abuseapi")
-        print("3. dificil")
+        print("3. Análisis de Malware")
         print("4. facildiferente1")
         print("5. facildiferente2")
         print("6. Salir")
@@ -27,7 +28,10 @@ def menu_principal():
                             break
         elif opcion == '3':
             while True:
-                try:
+                 try:
+                    mam.show_menu()
+                finally:
+                    print("Redirigiendo al menu principal ...")
 
         elif opcion == '4':
             while True:
