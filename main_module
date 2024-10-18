@@ -16,7 +16,8 @@ def menu_principal():
         opcion = input("Selecciona una opción (1, 2 3, 4, 5, o 6): ")
 
         if opcion == '1':
-            sh.iniciar_menu()
+            if __name__ == "__main__":
+                sh.iniciar_menu()
             
                     
         elif opcion == '2':
