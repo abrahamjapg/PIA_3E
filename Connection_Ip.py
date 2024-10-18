@@ -1,11 +1,17 @@
 from scapy.all import ARP, Ether, srp  # Importar las clases necesarias de la biblioteca Scapy
 import os  # Importar el módulo os para ejecutar comandos del sistema
+import ModuloRegistro_Manejo  # Importa el módulo de logs
+
+# Inicializar logs
+ModuloRegistro_Manejo.establecer_loggeos()
 
 def get_default_gateway():
+    ModuloRegistro_Manejo.log_exito(f"gateway")
     """Obtiene la dirección IP de la puerta de enlace predeterminada."""
     # Ejecutar un comando del sistema para obtener la dirección IP de la puerta de enlace
     gateway = os.popen("ip route | grep default | awk '{print $3}'").read().strip()
     return gateway  # Devolver la dirección IP de la puerta de enlace
+    
 
 def scan_network(ip_range):
     """Escanea la red y devuelve una lista de dispositivos conectados."""
@@ -25,9 +31,11 @@ def scan_network(ip_range):
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
 
     return devices  # Devolver la lista de dispositivos encontrados
+    ModuloRegistro_Manejo.log_exito(f"scan")
 
 def print_devices(devices):
     """Imprime la lista de dispositivos conectados."""
+    ModuloRegistro_Manejo.log_exito(f"devices")
     print("Dispositivos conectados:")
     print("IP\t\t\tMAC")
     print("-------------------------")
