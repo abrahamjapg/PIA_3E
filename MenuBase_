@@ -27,10 +27,8 @@ def menu_principal():
                         
                             break
         elif opcion == '3':
-                 try:
+                if __name__ == "__main__":
                     mam.show_menu()
-                finally:
-                    print("Redirigiendo al menu principal ...")
 
         elif opcion == '4':
             while True:
