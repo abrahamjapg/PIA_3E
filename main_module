@@ -1,6 +1,6 @@
 # -MODIFICACIONES NECESARIAS
 # -MENU INTERACTIVO FUENTE
-import shodanAPI_module
+import shodanAPI_module as sh
 import Malware_analyzer_module as mam
 
 def menu_principal():
@@ -16,8 +16,8 @@ def menu_principal():
         opcion = input("Selecciona una opción (1, 2 3, 4, 5, o 6): ")
 
         if opcion == '1':
-            if __name__ == "__main__":
-                shodanAPI_module
+            sh.iniciar_menu()
+            
                     
         elif opcion == '2':
             while True:
