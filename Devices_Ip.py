@@ -1,51 +1,72 @@
-from scapy.all import ARP, Ether, srp  # Importar las clases necesarias de la biblioteca Scapy
-import os  # Importar el módulo os para ejecutar comandos del sistema
-import ModuloRegistro_Manejo  # Importa el módulo de logs
+"""
+Este modulo escanea la red y muestra los dispositivos conectados
+"""
 
-# Inicializar logs
-ModuloRegistro_Manejo.establecer_loggeos()
-
+import os
+import subprocess
+import sys
+import platform
+import re
+import hashlib
+ 
+#Funcion para instalar librerias
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+ 
+#Ve si la libreria esta instalada
+try:
+    from scapy.all import ARP, Ether, srp
+except ImportError:
+    print("Scapy not installed. Installing...")
+    install("scapy")
+    from scapy.all import ARP, Ether, srp
+ 
+ 
 def get_default_gateway():
-    ModuloRegistro_Manejo.log_exito(f"gateway")
-    """Obtiene la dirección IP de la puerta de enlace predeterminada."""
-    # Ejecutar un comando del sistema para obtener la dirección IP de la puerta de enlace
-    gateway = os.popen("ip route | grep default | awk '{print $3}'").read().strip()
-    return gateway  # Devolver la dirección IP de la puerta de enlace
-    
-
+    #Comando para windows
+    if platform.system() == "Windows":
+        output = os.popen('ipconfig').read()
+        gateway = re.search(r'Puerta de enlace predeterminada[^\d]*(\d+\.\d+\.\d+\.\d+)', output)
+        gateway = gateway.group(1)
+    else:
+        #Comando para Unix
+        gateway = os.popen("ip route | grep default | awk '{print $3}'").read().strip()
+    return gateway
+ 
 def scan_network(ip_range):
-    """Escanea la red y devuelve una lista de dispositivos conectados."""
-    # Crear un paquete ARP para la dirección IP especificada
+    #Escanea la red y muestra los dispositivos conectados
     arp = ARP(pdst=ip_range)
-    # Crear un paquete Ethernet con la dirección de destino de broadcast
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
-    # Combinar el paquete ARP con el paquete Ethernet
     packet = ether / arp
-
-    # Enviar el paquete y recibir las respuestas
     result = srp(packet, timeout=3, verbose=0)[0]
-
-    devices = []  # Lista para almacenar los dispositivos encontrados
+ 
+    devices = []
     for sent, received in result:
-        # Agregar la dirección IP y MAC de cada dispositivo a la lista
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
+ 
+    return devices
 
-    return devices  # Devolver la lista de dispositivos encontrados
-    ModuloRegistro_Manejo.log_exito(f"scan")
-
-def print_devices(devices):
-    """Imprime la lista de dispositivos conectados."""
-    ModuloRegistro_Manejo.log_exito(f"devices")
-    print("Dispositivos conectados:")
-    print("IP\t\t\tMAC")
-    print("-------------------------")
-    for device in devices:
-        # Imprimir la dirección IP y MAC de cada dispositivo
-        print(f"{device['ip']}\t{device['mac']}")
-
-if __name__ == "__main__":
-    # Obtener la puerta de enlace predeterminada
+def Print_Terminal():
+    n = 'DireccionesIp.txt'
+    f = open(n, 'rb')
+    file_bytes = f.read()
+    f.close()
+    m = hashlib.sha256()
+    m.update(file_bytes)
+    hash = m.hexdigest()
+    dir_actual = os.path.dirname(os.path.abspath('DireccionesIp.txt'))
+    print(f'Se guardo el documento con el nombre: {n}')
+    print(f'Se guardo en la ubicacion: {dir_actual}')
+    print('Hash del archivo: {}'.format(hash))
+ 
+def Devices_IP():
+    #Obtiene la red predeterminada del dispositivo
     gateway_ip = get_default_gateway()
+    ip_range = f"{gateway_ip}/24"
+    devices = scan_network(ip_range)
+    with open('DireccionesIp.txt', mode='w') as file_object:
+        print(devices, file=file_object)
+    Print_Terminal()
     
     # Asumir que la subred es /24
     ip_range = f"{gateway_ip}/24"  # Crear el rango de IP basado en la puerta de enlace
